@@ -28,7 +28,6 @@ app.get(`/api/${apiVersion}/commits`, async (_, res) => {
 
         for(const commit of requestResult['data']){
             const commitData = commit['commit'];
-            const filesCommitted = await octokit.request(`GET /repos/{owner}/{repo}/git/trees/${commitData['tree']['sha']}`,repoData);
             const filteredCommitData = {
                 sha: commit['sha'],
                 date: commitData['committer']['date'],
@@ -39,7 +38,6 @@ app.get(`/api/${apiVersion}/commits`, async (_, res) => {
                     profile_url: commit['committer']['url'] 
                 },
                 message: commit['commit']['message'],
-                files: filesCommitted['data']['tree'].map(file => file['path'])
             }
             result.data.push(filteredCommitData);
         }
