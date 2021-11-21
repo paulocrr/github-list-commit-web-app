@@ -26,18 +26,18 @@ app.get(`/api/${apiVersion}/commits`, async (_, res) => {
         const status = requestResult['status'];
         result['status'] = status;
 
-        for(const commit of requestResult['data']){
-            const commitData = commit['commit'];
+        for(const data of requestResult['data']){
+            const commitData = data['commit'];
             const filteredCommitData = {
-                sha: commit['sha'],
+                sha: data['sha'],
                 date: commitData['committer']['date'],
                 committer: {
                     name: commitData['committer']['name'],
                     email: commitData['committer']['email'],
-                    username: commit['committer']['login'],
-                    profile_url: commit['committer']['url'] 
+                    username: data['committer']['login'],
+                    profile_url: data['committer']['url'] 
                 },
-                message: commit['commit']['message'],
+                message: data['commit']['message'],
             }
             result.data.push(filteredCommitData);
         }
