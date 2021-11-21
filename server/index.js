@@ -1,9 +1,10 @@
+require('dotenv').config();
 const { Octokit, App, Action } = require("octokit");
 const express = require('express');
 const app = express();
-const port = 3000;
+const port = process.env.PORT;
 const apiVersion = 'v1';
-const githubAccessKey = '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';
+const githubAccessKey = process.env.GITHUB_TOKEN;
 
 
 app.get('/', (req, res) => {
@@ -11,6 +12,7 @@ app.get('/', (req, res) => {
 });
 
 app.get(`/api/${apiVersion}/commits`, async (req, res) => {
+    
     const repoOwner = 'paulocrr';
     const repoName = 'github-list-commit-web-app';
     const octokit = new Octokit({auth: githubAccessKey});
