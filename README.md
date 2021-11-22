@@ -142,7 +142,7 @@ Also in the search field you can write part of a commit identifier and you will 
 <!-- CONTACT -->
 ## Contact
 
-Paulo Rodriguez - [@twitter_handle](https://twitter.com/paulo_crr) - paulo_crr@hotmail.com
+Paulo Rodriguez - [(Twitter) @paulo_crr](https://twitter.com/paulo_crr) - paulo_crr@hotmail.com
 
 Project Link: [https://github.com/paulocrr/github-list-commit-web-app](https://github.com/paulocrr/github-list-commit-web-app)
 
