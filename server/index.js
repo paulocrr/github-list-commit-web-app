@@ -1,5 +1,7 @@
-/** Server Configuration */
 require('dotenv').config();
+const date = require('date-and-time');
+
+/** Server Configuration */
 const express = require('express');
 const app = express();
 const port = 3001;
@@ -32,9 +34,10 @@ app.get(`/api/${apiVersion}/commits`, async (_, res) => {
         console.log(requestResult);
         for(const data of requestResult['data']){
             const commitData = data['commit'];
+            const commitDate = new Date(commitData['committer']['date']);
             const filteredCommitData = {
                 sha: data['sha'],
-                date: commitData['committer']['date'],
+                date: date.format(commitDate,'YYYY/MM/DD HH:mm:ss'),
                 committer: {
                     name: commitData['committer']['name'],
                     email: commitData['committer']['email'],

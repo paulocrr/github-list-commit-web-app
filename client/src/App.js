@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import {Card, Col, Container, Form, Navbar, Row, Button} from 'react-bootstrap';
+import {Card, Col, Container, Navbar, Row, Button} from 'react-bootstrap';
 import DataTable from 'react-data-table-component';
 
 import './App.css';
@@ -9,7 +9,7 @@ import FilterComponent from './componentes/filter-component';
 function App() {
 
   let [commits,setCommits] = useState([]);
-  let [actualShowMessage,setActualShowMessage] = useState('');
+  let [selectedCommitDetail,setSelectedCommitDetail] = useState({});
   let [showMessageModal, setShowMessageModal] = useState(false);
   const [filterText, setFilterText] = useState('');
 	const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
@@ -17,8 +17,8 @@ function App() {
 		item => item.sha && item.sha.includes(filterText.toLowerCase()),
 	);
 
-  let openMessageModal = (message) => {
-    setActualShowMessage(message);
+  let openMessageModal = (sha,date,message) => {
+    setSelectedCommitDetail({id: sha,date: date,message: message});
     setShowMessageModal(true);
   }
 
@@ -69,7 +69,7 @@ function App() {
       {
         name: 'Options',
         selector: row=>{
-          return (<Button onClick={()=>openMessageModal(row['message'])} variant="primary">Show Message</Button>);
+          return (<Button onClick={()=>openMessageModal(row['sha'],row['date'],row['message'])} variant="primary">Show Message</Button>);
         },
       }
     ]
@@ -131,7 +131,9 @@ function App() {
                         <ShowMessageModal 
                           showMessageModal={openMessageModal} 
                           closeModal = {closeMessageModal} 
-                          message = {actualShowMessage} 
+                          id = {selectedCommitDetail.id}
+                          date = {selectedCommitDetail.date} 
+                          message = {selectedCommitDetail.message} 
                         />
                     :
                         null
