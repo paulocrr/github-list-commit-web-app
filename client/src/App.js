@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import {Card, Col, Container, Navbar, Row, Button} from 'react-bootstrap';
+import {Card, Col, Container, Navbar, Row, Button, Alert} from 'react-bootstrap';
 import DataTable from 'react-data-table-component';
 
 import './App.css';
@@ -9,10 +9,17 @@ import FilterComponent from './components/filter-component';
 function App() {
 
   let [commits,setCommits] = useState([]);
+
+  let [errorMessage,setErrorMessage] = useState({show: false, message: ''});
+
   let [selectedCommitDetail,setSelectedCommitDetail] = useState({});
+
   let [showCommitDetailModal, setShowCommitDetailModal] = useState(false);
+
   const [filterText, setFilterText] = useState('');
+
 	const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
+
   const filteredItems = commits.filter(
 		item => item.sha && item.sha.includes(filterText.toLowerCase()),
 	);
@@ -23,8 +30,6 @@ function App() {
   }
 
   const closeCommitDetailModal = () => setShowCommitDetailModal(false);
-
-  
 
 	const subHeaderComponentMemo = useMemo(() => {
 		const handleClear = () => {
@@ -74,9 +79,6 @@ function App() {
       }
     ]
 
- 
-
-
   const getCommits = () => {
     fetch('/api/v1/commits')
     .then(response=>{
@@ -86,7 +88,6 @@ function App() {
       throw response;
     })
     .then(data => {
-      
       commits = data['data'].map((commit) => {
         return {
           sha: commit['sha'],
@@ -101,7 +102,7 @@ function App() {
       setCommits(commits);
     })
     .catch(error=>{
-      console.error(error);
+      setErrorMessage({show: true, message: error});
     })
   }
 
@@ -110,7 +111,6 @@ function App() {
   });
 
   
-
   return (
     <>
       <Navbar bg="light" expand="lg">
@@ -119,39 +119,45 @@ function App() {
         </Container>
       </Navbar>
       <Container className="main-contianer">
-      
         <Row className="justify-content-center">
           <Col xs={12} sm={12} lg={10}>
-              <Card>
-                <Card.Body>
-                  <Card.Title className="main-title">Commit List</Card.Title>
-                  {
-                    showCommitDetailModal? 
-                        <ShowMessageModal 
-                          showMessageModal={openCommitDetailModal} 
-                          closeModal = {closeCommitDetailModal} 
-                          id = {selectedCommitDetail.id}
-                          date = {selectedCommitDetail.date} 
-                          message = {selectedCommitDetail.message} 
-                        />
-                    :
-                        null
-                  }
-                  <DataTable
-                      columns={columns}
-                      data = {filteredItems}
-                      pagination
-                      paginationResetDefaultPage={resetPaginationToggle}
-                      subHeader
-                      subHeaderComponent={subHeaderComponentMemo}
-                      persistTableHead
-                  />
-                  
-                </Card.Body>
-              </Card>
+            {
+              errorMessage.show?
+                <Alert variant="danger">
+                  {errorMessage.message}
+                </Alert>
+              :
+                null
+            }
+            <Card className="content-card">
+              <Card.Body>
+                <Card.Title className="main-title">Commit List</Card.Title>
+                {
+                  showCommitDetailModal? 
+                      <ShowMessageModal 
+                        showMessageModal={openCommitDetailModal} 
+                        closeModal = {closeCommitDetailModal} 
+                        id = {selectedCommitDetail.id}
+                        date = {selectedCommitDetail.date} 
+                        message = {selectedCommitDetail.message} 
+                      />
+                  :
+                      null
+                }
+                <DataTable
+                    columns={columns}
+                    data = {filteredItems}
+                    pagination
+                    paginationResetDefaultPage={resetPaginationToggle}
+                    subHeader
+                    subHeaderComponent={subHeaderComponentMemo}
+                    persistTableHead
+                />
+                
+              </Card.Body>
+            </Card>
           </Col>
         </Row>
-        
       </Container>
     </>
   );

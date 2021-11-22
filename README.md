@@ -1,42 +1,16 @@
 <div id="top"></div>
-<!--
-*** Thanks for checking out the Best-README-Template. If you have a suggestion
-*** that would make this better, please fork the repo and create a pull request
-*** or simply open an issue with the tag "enhancement".
-*** Don't forget to give the project a star!
-*** Thanks again! Now go create something AMAZING! :D
--->
-
-
 
 <!-- PROJECT SHIELDS -->
-<!--
-*** I'm using markdown "reference style" links for readability.
-*** Reference links are enclosed in brackets [ ] instead of parentheses ( ).
-*** See the bottom of this document for the declaration of the reference variables
-*** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
-*** https://www.markdownguide.org/basic-syntax/#reference-style-links
--->
 [![LinkedIn][linkedin-shield]][linkedin-url]
 
 
 
-<!-- PROJECT LOGO -->
+<!-- PROJECT TITLE -->
 <br />
 <div align="center">
-  <a href="https://github.com/github_username/repo_name">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
-  </a>
-
-<h3 align="center">Github Commit List Application</h3>
-
+  <h3 align="center">Github Commit List Application</h3>
   <p align="center">
-    project_description
-    <br />
-    <a href="https://github.com/github_username/repo_name"><strong>Explore the docs »</strong></a>
-    <br />
-    <br />
-    <a href="https://github.com/github_username/repo_name">View Demo</a>
+    Este proyecto se encuentra tanto en frontend como el backend de una aplicacion para poder ver los commits que se realizan en este repositorio.
   </p>
 </div>
 
@@ -56,11 +30,10 @@
       <a href="#getting-started">Getting Started</a>
       <ul>
         <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
       </ul>
     </li>
+    <li><a href="#installation">Installation</a></li>
     <li><a href="#usage">Usage</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contact">Contact</a></li>
   </ol>
 </details>
@@ -70,7 +43,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+[![Commit List App][product-screenshot]](https://example.com)
 
 Here's a blank template to get started: To avoid retyping too much info. Do a search and replace with your text editor for the following: `github_username`, `repo_name`, `twitter_handle`, `linkedin_username`, `email`, `email_client`, `project_title`, `project_description`
 
@@ -82,7 +55,6 @@ Here's a blank template to get started: To avoid retyping too much info. Do a se
 
 * [React.js](https://reactjs.org/)
 * [Bootstrap](https://getbootstrap.com)
-* [JQuery](https://jquery.com)
 * [Octokit](https://www.npmjs.com/package/octokit)
 * [Expressjs](https://expressjs.com/)
 
@@ -98,55 +70,70 @@ To get a local copy up and running follow these simple example steps.
 
 ### Prerequisites
 
-This is an example of how to list things you need to use the software and how to install them.
+To run this project you need the following
+* NodeJs It can be downloaded from the following link: [https://nodejs.org/en/](https://nodejs.org/en/)
 * npm
   ```sh
   npm install npm@latest -g
   ```
+* Create a Personal Access Token on Github from [https://github.com/settings/tokens/new](https://github.com/settings/tokens/new), give a name to your new token and check all the repo scope and click on "Generate token".
 
-### Installation
-
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
+* Clone the repo
    ```sh
    git clone https://github.com/github_username/repo_name.git
    ```
+
+## Installation
+### Server Installation
+1. Open a bash in the folder where you cloned the repository
+2. Navigate to the server folder
+  ```sh
+  cd github-list-commit-web-app/server
+  ```
 3. Install NPM packages
    ```sh
    npm install
    ```
-4. Enter your API in `config.js`
-   ```js
-   const API_KEY = 'ENTER YOUR API';
+4. Create a .env file and create a variable named GITHUB_ACCESS_TOKEN and copy and paste your github access personal token wich you created earlier , if you have doubts, consult the .env.example file for reference.
    ```
+   GITHUB_ACCESS_TOKEN = <ENTER YOUR GITHUB ACCESS PERSONAL TOKEN>
+   ```
+5. Then start the server using the following command
+   ```sh
+   nodemon
+   ```
+6. The server will start in the following direction [http://localhost:3001/](http://localhost:3001/), if you enter to that url and you see the message Hello World in the browser you setup correctly de server enviroment.
+
+7. To test de API functionality enter the following url [http://localhost:3001/api/v1/commits](http://localhost:3001/api/v1/commits), if you see a json response with a status 200 attibute the api is working correctly.
+
+### Client Installation
+1. Open a bash in the folder where you cloned the repository
+2. Navigate to the client folder
+  ```sh
+  cd github-list-commit-web-app/client
+  ```
+3. Install NPM packages
+   ```sh
+   npm install
+   ```
+4. Then start the react server using the following command
+   ```sh
+   npm start
+   ```
+5. The react server will start in the following direction [http://localhost:3000/](http://localhost:3000/), If you can see a UI like the one seen in the screenshot that is in this README then the react server is working correctly. 
+
 
 <p align="right">(<a href="#top">back to top</a>)</p>
-
 
 
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+The client interface shows a table of all the commits made in this repository, per commit shows the following data: the commit identifier, the date and time it was made, the name of the person who made it, the email of the person, the user (if you click on the username this will take you to your profile on github), and a button to see details, if you click on that button it will show you a modal showing the message that that commit had, the identifier complete and date. If you click on the name of the row you can sort the table with respect to that column, the columns that have a function are: Date, Name, Email, User. To have a better visibility, the table is paginated and by clicking on the arrows at the bottom of the table you can navigate between the different pages, you can also control the number of records shown per page.
 
-_For more examples, please refer to the [Documentation](https://example.com)_
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-
-
-<!-- ROADMAP -->
-## Roadmap
-
-- [] Feature 1
-- [] Feature 2
-- [] Feature 3
-    - [] Nested Feature
-
-See the [open issues](https://github.com/github_username/repo_name/issues) for a full list of proposed features (and known issues).
+Also in the search field you can write part of a commit identifier and you will be able to see all the commits that that string contains in its identifier. Finally, if you click on the Clear button, what you wrote in the filter input will be deleted and all the commits will be displayed.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
-
 
 
 <!-- CONTACT -->
@@ -154,7 +141,7 @@ See the [open issues](https://github.com/github_username/repo_name/issues) for a
 
 Paulo Rodriguez - [@twitter_handle](https://twitter.com/paulo_crr) - paulo_crr@hotmail.com
 
-Project Link: [https://github.com/github_username/repo_name](https://github.com/github_username/repo_name)
+Project Link: [https://github.com/paulocrr/github-list-commit-web-app](https://github.com/paulocrr/github-list-commit-web-app)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 

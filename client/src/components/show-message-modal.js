@@ -14,13 +14,14 @@ function ShowMessageModal(props){
                 <ListGroup>
                     <ListGroup.Item>Commit ID: {props.id}</ListGroup.Item>
                     <ListGroup.Item>Date: {props.date}</ListGroup.Item>
-                    <ListGroup.Item><h5>Message:</h5> <strong>{props.message}</strong></ListGroup.Item>
+                    <ListGroup.Item>
+                        <h5>Message:</h5> 
+                        <strong>{props.message}</strong>
+                    </ListGroup.Item>
                 </ListGroup>
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="secondary" onClick={props.closeModal}>
-                Close
-                </Button>
+                <Button variant="secondary" onClick={props.closeModal}>Close</Button>
             </Modal.Footer>
         </Modal>
     );

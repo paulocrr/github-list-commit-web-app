@@ -7,9 +7,15 @@ body{
 }
 
 .main-contianer{
-  padding: 30px;
+  padding: 60px;
 }
 
 .main-title{
+  font-size: 32px !important;
   text-align: center;
+}
+
+.content-card{
+  padding: 32px;
+  border-radius: 16px !important;
 }
