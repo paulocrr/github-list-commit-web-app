@@ -3,37 +3,28 @@ import {Card, Col, Container, Form, Navbar, Row, Button} from 'react-bootstrap';
 import DataTable from 'react-data-table-component';
 
 import './App.css';
+import ShowMessageModal from './componentes/show-message-modal';
+import FilterComponent from './componentes/filter-component';
 
 function App() {
 
   let [commits,setCommits] = useState([]);
+  let [actualShowMessage,setActualShowMessage] = useState('');
+  let [showMessageModal, setShowMessageModal] = useState(false);
   const [filterText, setFilterText] = useState('');
 	const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
   const filteredItems = commits.filter(
 		item => item.sha && item.sha.includes(filterText.toLowerCase()),
 	);
-  const FilterComponent = ({ filterText, onFilter, onClear }) => (
-    <Row>
-      <Col xs="auto">
-        <Form.Label htmlFor="inlineFormInput" visuallyHidden>
-          Search
-        </Form.Label>
-        <Form.Control
-          autoFocus="true"
-          className="mb-2"
-          type="text"
-          placeholder="Filter By Sha"
-          value={filterText}
-          onChange={onFilter}
-        />
-      </Col>
-      <Col xs="auto">
-        <Button variant="primary" onClick={onClear}>
-          Clear
-        </Button>
-      </Col>
-    </Row>
-  );
+
+  let openMessageModal = (message) => {
+    setActualShowMessage(message);
+    setShowMessageModal(true);
+  }
+
+  const closeMessageModal = () => setShowMessageModal(false);
+
+  
 
 	const subHeaderComponentMemo = useMemo(() => {
 		const handleClear = () => {
@@ -48,34 +39,40 @@ function App() {
 		);
 	}, [filterText, resetPaginationToggle]);
 
-  const columns = [
-    {
-      name: 'Identificator',
-      selector: row=>row['sha']
-    },
-    {
-      name: 'Date',
-      selector: row=>row['date'],
-      sortable: true,
-    },
-    {
-      name: 'Name',
-      selector: row=>row['name'],
-      sortable: true,
-    },
-    {
-      name: 'Email',
-      selector: row=>row['email'],
-      sortable: true,
-    },
-    {
-      name: 'User',
-      selector: row=>{
-        return (<a target="_blank" href={row['profile_url']} rel="noreferrer">{row['username']}</a>);
+  let columns =  [
+      {
+        name: 'Identificator',
+        selector: row=>row['sha']
       },
-      sortable: true,
-    },
-  ]
+      {
+        name: 'Date',
+        selector: row=>row['date'],
+        sortable: true,
+      },
+      {
+        name: 'Name',
+        selector: row=>row['name'],
+        sortable: true,
+      },
+      {
+        name: 'Email',
+        selector: row=>row['email'],
+        sortable: true,
+      },
+      {
+        name: 'User',
+        selector: row=>{
+          return (<a target="_blank" href={row['profile_url']} rel="noreferrer">{row['username']}</a>);
+        },
+        sortable: true,
+      },
+      {
+        name: 'Options',
+        selector: row=>{
+          return (<Button onClick={()=>openMessageModal(row['message'])} variant="primary">Show Message</Button>);
+        },
+      }
+    ]
 
  
 
@@ -97,7 +94,8 @@ function App() {
           name: commit['committer']['name'],
           email: commit['committer']['email'],
           username: commit['committer']['username'],
-          profile_url: commit['committer']['profile_url']
+          profile_url: commit['committer']['profile_url'],
+          message: commit['message']
         }
       });
       setCommits(commits);
@@ -109,7 +107,7 @@ function App() {
 
   useEffect(()=>{
     getCommits();
-  },[]);
+  });
 
   
 
@@ -122,16 +120,27 @@ function App() {
         </Container>
       </Navbar>
       <Container className="main-contianer">
+      
         <Row className="justify-content-center">
-          <Col lg={10}>
+          <Col xs={12} sm={12} lg={10}>
               <Card>
                 <Card.Body>
                   <Card.Title className="main-title">Commit List</Card.Title>
+                  {
+                    showMessageModal? 
+                        <ShowMessageModal 
+                          showMessageModal={openMessageModal} 
+                          closeModal = {closeMessageModal} 
+                          message = {actualShowMessage} 
+                        />
+                    :
+                        null
+                  }
                   <DataTable
                       columns={columns}
                       data = {filteredItems}
                       pagination
-                      paginationResetDefaultPage={resetPaginationToggle} // optionally, a hook to reset pagination to page 1
+                      paginationResetDefaultPage={resetPaginationToggle}
                       subHeader
                       subHeaderComponent={subHeaderComponentMemo}
                       persistTableHead
