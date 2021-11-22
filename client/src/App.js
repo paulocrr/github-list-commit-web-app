@@ -8,6 +8,8 @@ import FilterComponent from './components/filter-component';
 
 function App() {
 
+  let [isLoading, setIsLoading] = useState(true);
+
   let [commits,setCommits] = useState([]);
 
   let [errorMessage,setErrorMessage] = useState({show: false, message: ''});
@@ -100,6 +102,7 @@ function App() {
         }
       });
       setCommits(commits);
+      setIsLoading(!isLoading);
     })
     .catch(error=>{
       setErrorMessage({show: true, message: error});
@@ -108,7 +111,8 @@ function App() {
 
   useEffect(()=>{
     getCommits();
-  });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[]);
 
   
   return (
@@ -125,6 +129,14 @@ function App() {
               errorMessage.show?
                 <Alert variant="danger">
                   {errorMessage.message}
+                </Alert>
+              :
+                null
+            }
+            {
+              isLoading?
+                <Alert variant="warning">
+                  Loading Commit List please wait
                 </Alert>
               :
                 null
