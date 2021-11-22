@@ -3,8 +3,8 @@ import {Card, Col, Container, Navbar, Row, Button} from 'react-bootstrap';
 import DataTable from 'react-data-table-component';
 
 import './App.css';
-import ShowMessageModal from './componentes/show-message-modal';
-import FilterComponent from './componentes/filter-component';
+import ShowMessageModal from './components/show-message-modal';
+import FilterComponent from './components/filter-component';
 
 function App() {
 
@@ -115,8 +115,7 @@ function App() {
     <>
       <Navbar bg="light" expand="lg">
         <Container>
-          <Navbar.Brand href="#home">Commit list of github-list-commit-web-app repo</Navbar.Brand>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Brand>Commit list of github-list-commit-web-app repo</Navbar.Brand>
         </Container>
       </Navbar>
       <Container className="main-contianer">
