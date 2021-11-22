@@ -72,6 +72,8 @@ To get a local copy up and running follow these simple example steps.
 ### Prerequisites
 
 To run this project you need the following
+* Git you can download from this link: [https://git-scm.com/downloads](https://git-scm.com/downloads)
+* A Github account, if you dont have one you can created from: [GitHub](https://github.com/signup?ref_cta=Sign+up&ref_loc=header+logged+out&ref_page=%2F&source=header-home)
 * NodeJs It can be downloaded from the following link: [https://nodejs.org/en/](https://nodejs.org/en/)
 * npm
   ```sh
