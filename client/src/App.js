@@ -102,7 +102,7 @@ function App() {
         }
       });
       setCommits(commits);
-      setIsLoading(!isLoading);
+      setIsLoading(false);
     })
     .catch(error=>{
       setErrorMessage({show: true, message: error});
