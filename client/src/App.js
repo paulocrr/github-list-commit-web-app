@@ -10,19 +10,19 @@ function App() {
 
   let [commits,setCommits] = useState([]);
   let [selectedCommitDetail,setSelectedCommitDetail] = useState({});
-  let [showMessageModal, setShowMessageModal] = useState(false);
+  let [showCommitDetailModal, setShowCommitDetailModal] = useState(false);
   const [filterText, setFilterText] = useState('');
 	const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
   const filteredItems = commits.filter(
 		item => item.sha && item.sha.includes(filterText.toLowerCase()),
 	);
 
-  let openMessageModal = (sha,date,message) => {
+  let openCommitDetailModal = (sha,date,message) => {
     setSelectedCommitDetail({id: sha,date: date,message: message});
-    setShowMessageModal(true);
+    setShowCommitDetailModal(true);
   }
 
-  const closeMessageModal = () => setShowMessageModal(false);
+  const closeCommitDetailModal = () => setShowCommitDetailModal(false);
 
   
 
@@ -69,7 +69,7 @@ function App() {
       {
         name: 'Options',
         selector: row=>{
-          return (<Button onClick={()=>openMessageModal(row['sha'],row['date'],row['message'])} variant="primary">Show Message</Button>);
+          return (<Button onClick={()=>openCommitDetailModal(row['sha'],row['date'],row['message'])} variant="primary">Show Details</Button>);
         },
       }
     ]
@@ -127,10 +127,10 @@ function App() {
                 <Card.Body>
                   <Card.Title className="main-title">Commit List</Card.Title>
                   {
-                    showMessageModal? 
+                    showCommitDetailModal? 
                         <ShowMessageModal 
-                          showMessageModal={openMessageModal} 
-                          closeModal = {closeMessageModal} 
+                          showMessageModal={openCommitDetailModal} 
+                          closeModal = {closeCommitDetailModal} 
                           id = {selectedCommitDetail.id}
                           date = {selectedCommitDetail.date} 
                           message = {selectedCommitDetail.message} 
