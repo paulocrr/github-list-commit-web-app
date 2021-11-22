@@ -10,7 +10,7 @@
 <div align="center">
   <h3 align="center">Github Commit List Application</h3>
   <p align="center">
-    Este proyecto se encuentra tanto en frontend como el backend de una aplicacion para poder ver los commits que se realizan en este repositorio.
+    This project is in both the frontend and the backend of an application to be able to see the commits that are made in this repository.
   </p>
 </div>
 
@@ -30,9 +30,10 @@
       <a href="#getting-started">Getting Started</a>
       <ul>
         <li><a href="#prerequisites">Prerequisites</a></li>
+        <li><a href="#server-installation">Server Installation</a></li>
+        <li><a href="#client-installation">Client Installation</a></li>
       </ul>
     </li>
-    <li><a href="#installation">Installation</a></li>
     <li><a href="#usage">Usage</a></li>
     <li><a href="#contact">Contact</a></li>
   </ol>
@@ -43,9 +44,9 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Commit List App][product-screenshot]](https://example.com)
+[![Commit List App][product-screenshot]](https://github.com/paulocrr/github-list-commit-web-app)
 
-Here's a blank template to get started: To avoid retyping too much info. Do a search and replace with your text editor for the following: `github_username`, `repo_name`, `twitter_handle`, `linkedin_username`, `email`, `email_client`, `project_title`, `project_description`
+This web application allows you to see different data of the commits that have been made and will be made on this repository.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -87,9 +88,9 @@ To run this project you need the following
 ### Server Installation
 1. Open a bash in the folder where you cloned the repository
 2. Navigate to the server folder
-  ```sh
-  cd github-list-commit-web-app/server
-  ```
+    ```sh
+    cd github-list-commit-web-app/server
+    ```
 3. Install NPM packages
    ```sh
    npm install
@@ -109,9 +110,9 @@ To run this project you need the following
 ### Client Installation
 1. Open a bash in the folder where you cloned the repository
 2. Navigate to the client folder
-  ```sh
-  cd github-list-commit-web-app/client
-  ```
+    ```sh
+    cd github-list-commit-web-app/client
+    ```
 3. Install NPM packages
    ```sh
    npm install
