@@ -1,0 +1,15 @@
+body{
+  background-color: #F5F3F3 !important;
+}
+
+.justify-content-center{
+  justify-content: center;
+}
+
+.main-contianer{
+  padding: 30px;
+}
+
+.main-title{
+  text-align: center;
+}
