@@ -1,4 +1,5 @@
 /** Server Configuration */
+require('dotenv').config();
 const express = require('express');
 const app = express();
 const port = 3001;
@@ -6,13 +7,16 @@ const apiVersion = 'v1';
 
 /** Github API Configuration */
 const { Octokit} = require("octokit");
+const githubToken = process.env.GITHUB_ACCESS_TOKEN;
 const repoOwner = 'paulocrr';
 const repoName = 'github-list-commit-web-app';
 const repoData = {
     owner: repoOwner,
     repo: repoName
 }
-const octokit = new Octokit();
+const octokit = new Octokit({
+    auth: githubToken
+});
 
 app.get('/', (_, res) => {
   res.send('Hello World!');
@@ -25,7 +29,7 @@ app.get(`/api/${apiVersion}/commits`, async (_, res) => {
         const requestResult = await octokit.request('GET /repos/{owner}/{repo}/commits', repoData);
         const status = requestResult['status'];
         result['status'] = status;
-
+        console.log(requestResult);
         for(const data of requestResult['data']){
             const commitData = data['commit'];
             const filteredCommitData = {
@@ -35,7 +39,7 @@ app.get(`/api/${apiVersion}/commits`, async (_, res) => {
                     name: commitData['committer']['name'],
                     email: commitData['committer']['email'],
                     username: data['committer']['login'],
-                    profile_url: data['committer']['url'] 
+                    profile_url: data['committer']['html_url'] 
                 },
                 message: data['commit']['message'],
             }
