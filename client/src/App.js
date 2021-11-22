@@ -1,11 +1,85 @@
-import { useEffect, useState } from 'react';
-import {Card, Col, Container, Navbar, Row, Table} from 'react-bootstrap';
+import { useEffect, useMemo, useState } from 'react';
+import {Card, Col, Container, Form, Navbar, Row, Button} from 'react-bootstrap';
+import DataTable from 'react-data-table-component';
 
 import './App.css';
 
 function App() {
 
-  let [commits,setCommits] = useState(0);
+  let [commits,setCommits] = useState([]);
+  const [filterText, setFilterText] = useState('');
+	const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
+  const filteredItems = commits.filter(
+		item => item.sha && item.sha.includes(filterText.toLowerCase()),
+	);
+  const FilterComponent = ({ filterText, onFilter, onClear }) => (
+    <Row>
+      <Col xs="auto">
+        <Form.Label htmlFor="inlineFormInput" visuallyHidden>
+          Search
+        </Form.Label>
+        <Form.Control
+          autoFocus="true"
+          className="mb-2"
+          type="text"
+          placeholder="Filter By Sha"
+          value={filterText}
+          onChange={onFilter}
+        />
+      </Col>
+      <Col xs="auto">
+        <Button variant="primary" onClick={onClear}>
+          Clear
+        </Button>
+      </Col>
+    </Row>
+  );
+
+	const subHeaderComponentMemo = useMemo(() => {
+		const handleClear = () => {
+			if (filterText) {
+				setResetPaginationToggle(!resetPaginationToggle);
+				setFilterText('');
+			}
+		};
+
+		return (
+			<FilterComponent onFilter={e => setFilterText(e.target.value)} onClear={handleClear} filterText={filterText} />
+		);
+	}, [filterText, resetPaginationToggle]);
+
+  const columns = [
+    {
+      name: 'Identificator',
+      selector: row=>row['sha']
+    },
+    {
+      name: 'Date',
+      selector: row=>row['date'],
+      sortable: true,
+    },
+    {
+      name: 'Name',
+      selector: row=>row['name'],
+      sortable: true,
+    },
+    {
+      name: 'Email',
+      selector: row=>row['email'],
+      sortable: true,
+    },
+    {
+      name: 'User',
+      selector: row=>{
+        return (<a target="_blank" href={row['profile_url']} rel="noreferrer">{row['username']}</a>);
+      },
+      sortable: true,
+    },
+  ]
+
+ 
+
+
   const getCommits = () => {
     fetch('/api/v1/commits')
     .then(response=>{
@@ -15,8 +89,18 @@ function App() {
       throw response;
     })
     .then(data => {
-      console.log(data);
-      setCommits(data['data']);
+      
+      commits = data['data'].map((commit) => {
+        return {
+          sha: commit['sha'],
+          date: commit['date'],
+          name: commit['committer']['name'],
+          email: commit['committer']['email'],
+          username: commit['committer']['username'],
+          profile_url: commit['committer']['profile_url']
+        }
+      });
+      setCommits(commits);
     })
     .catch(error=>{
       console.error(error);
@@ -43,39 +127,16 @@ function App() {
               <Card>
                 <Card.Body>
                   <Card.Title className="main-title">Commit List</Card.Title>
-                  <Table striped bordered hover>
-                    <thead>
-                      <tr>
-                        <th>#</th>
-                        <th>Identificator</th>
-                        <th>Date</th>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>User</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {
-                        commits.length>0 && commits.map(
-                          (row,index)=>(
-                            <tr key={index}>
-                              <td>{index}</td>
-                              <td>{row['sha']}</td>
-                              <td>{row['date']}</td>
-                              <td>{row['committer']['name']}</td>
-                              <td>{row['committer']['email']}</td>
-                              <td><a target="_blank" href={row['committer']['profile_url']} rel="noreferrer">{row['committer']['username']}</a></td>
-                            </tr>
-                          )
-                        )
-                      }
-
-                      {
-                        commits.length === 0 && 
-                        <td colSpan="6">No hay Commits</td>
-                      }
-                    </tbody>
-                  </Table>
+                  <DataTable
+                      columns={columns}
+                      data = {filteredItems}
+                      pagination
+                      paginationResetDefaultPage={resetPaginationToggle} // optionally, a hook to reset pagination to page 1
+                      subHeader
+                      subHeaderComponent={subHeaderComponentMemo}
+                      persistTableHead
+                  />
+                  
                 </Card.Body>
               </Card>
           </Col>
